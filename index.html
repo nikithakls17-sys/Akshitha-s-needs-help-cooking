@@ -545,9 +545,12 @@
       <input type="text" id="sOllamaModel">
     </div>
     <p class="note" style="margin:18px 0 0">Saved only in this browser.</p>
+    <p class="note" id="testResult" style="margin:10px 0 0"></p>
     <div class="row" style="justify-content:flex-end;margin-top:22px">
-      <button class="btn ghost" value="cancel" formnovalidate>Cancel</button>
-      <button class="btn" value="save">Save</button>
+      <!-- Save comes first in the DOM so pressing Enter saves instead of cancelling -->
+      <button class="btn" value="save" style="order:3">Save</button>
+      <button class="btn ghost" type="button" id="testBtn" style="order:1">Test connection</button>
+      <button class="btn ghost" type="button" id="cancelSettings" style="order:2">Cancel</button>
     </div>
   </form>
 </dialog>
@@ -711,15 +714,34 @@ function openSettings() {
 }
 $('#openSettings').onclick = openSettings;
 $$('input[name=provider]').forEach(r => r.onchange = syncProviderBoxes);
-dlg.addEventListener('close', () => {
-  if (dlg.returnValue !== 'save') return;
-  settings = {
+function readSettingsForm() {
+  return {
     provider: $('input[name=provider]:checked')?.value || 'gemini',
     apiKey: $('#sKey').value.trim(),
     model: $('#sModel').value.trim() || DEFAULT_SETTINGS.model,
     ollamaUrl: $('#sOllamaUrl').value.trim() || DEFAULT_SETTINGS.ollamaUrl,
     ollamaModel: $('#sOllamaModel').value.trim() || DEFAULT_SETTINGS.ollamaModel
   };
+}
+$('#cancelSettings').onclick = () => dlg.close('cancel');
+$('#testBtn').onclick = async () => {
+  const out = $('#testResult'), btn = $('#testBtn');
+  const saved = settings;
+  settings = readSettingsForm();
+  out.style.color = 'var(--muted)'; out.textContent = 'Testing...'; btn.disabled = true;
+  try {
+    parseJSON(await callModel('Reply with only this JSON: {"ok": true}'));
+    out.style.color = 'var(--leaf-dk)'; out.textContent = `Connected to ${settings.provider === 'ollama' ? settings.ollamaModel : settings.model}. Press Save.`;
+  } catch (e) {
+    out.style.color = 'var(--err)'; out.textContent = e instanceof FriendlyError ? e.message : String(e);
+  } finally {
+    settings = saved; btn.disabled = false;
+  }
+};
+dlg.addEventListener('close', () => {
+  $('#testResult').textContent = '';
+  if (dlg.returnValue !== 'save') return;
+  settings = readSettingsForm();
   store.set('settings', settings);
   updateBanner();
 });
