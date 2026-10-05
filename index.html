@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akshita's Kitchen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f6f1e7; --paper:#fbf8f2; --line:#e3dccd; --line-soft:#ece6da;
+    --ink:#2a2924; --muted:#7b7566; --faint:#a59e8e;
+    --sage:#6f8a6a; --sage-lt:#e4ebdf; --forest:#2e4636; --forest-dk:#22352a;
+    --stone:#8f8a7e; --clay:#b9855f; --clay-lt:#f1e4d6;
+    --err:#a64b36; --err-lt:#f6e5df;
+    --serif:"Playfair Display","Bodoni 72","Didot",Georgia,serif;
+    --sans:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --side:272px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--cream);color:var(--ink);font:300 15px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+  button,input,textarea,select{font:inherit;color:inherit}
+  a{color:var(--forest)}
+
+  /* ---------- type system ---------- */
+  .eyebrow{font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.35rem;color:var(--sage);margin:0}
+  .display{font-family:var(--serif);font-weight:400;font-size:clamp(2.2rem,4.2vw,3.6rem);line-height:1.05;letter-spacing:-.01em;margin:4px 0 10px;text-transform:uppercase}
+  .caps{font-family:var(--sans);font-weight:500;text-transform:uppercase;letter-spacing:.22em;font-size:.72rem;color:var(--muted)}
+  .lede{max-width:560px;color:var(--muted);margin:0}
+
+  /* ---------- shell ---------- */
+  .app{display:grid;grid-template-columns:var(--side) 1fr;height:100vh;height:100dvh}
+  aside{background:var(--forest);color:#eae6da;display:flex;flex-direction:column;padding:36px 28px 28px;overflow-y:auto}
+  .brand{font-family:var(--serif);line-height:1}
+  .brand i{display:block;font-size:1.25rem;color:#bfcdb6;margin-bottom:4px}
+  .brand b{display:block;font-weight:400;font-size:2.1rem;letter-spacing:.02em;text-transform:uppercase}
+  .brand small{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:#a9b6a2;margin-top:12px}
+  nav{display:flex;flex-direction:column;gap:2px;margin-top:44px}
+  nav button{all:unset;cursor:pointer;display:flex;align-items:baseline;gap:14px;padding:11px 12px;border-radius:10px;font-size:.74rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:#c9d2c1;transition:background .2s,color .2s}
+  nav button .n{font-family:var(--serif);font-style:italic;letter-spacing:0;font-size:.95rem;color:#8fa088;width:18px}
+  nav button:hover{background:rgba(255,255,255,.06);color:#fff}
+  nav button.active{background:var(--cream);color:var(--forest)}
+  nav button.active .n{color:var(--sage)}
+  nav button.feature{padding:16px 12px;margin-bottom:10px;border:1px solid rgba(255,255,255,.18)}
+  nav button.feature span.lbl{font-family:var(--serif);font-size:1.45rem;letter-spacing:.04em;font-weight:400}
+  nav button.feature.active{border-color:var(--cream)}
+  .side-foot{margin-top:auto;padding-top:28px;display:flex;flex-direction:column;gap:16px}
+  .settings-btn{all:unset;cursor:pointer;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#c9d2c1;border-top:1px solid rgba(255,255,255,.15);padding-top:16px}
+  .settings-btn:hover{color:#fff}
+  .disclaimer{font-size:.72rem;line-height:1.5;color:#98a592}
+
+  main{overflow-y:auto;position:relative}
+  section.tab{display:none;min-height:100%;flex-direction:column}
+  section.tab.active{display:flex}
+  .page{padding:clamp(28px,5vw,72px);flex:1}
+  .page-head{margin-bottom:36px;max-width:880px}
+
+  /* ---------- swap hero ---------- */
+  .hero{position:relative;min-height:62vh;display:flex;align-items:center;justify-content:center;text-align:center;color:#f7f3ea;padding:clamp(48px,7vw,96px) clamp(20px,5vw,72px);
+    background:
+      radial-gradient(ellipse 60% 70% at 85% 15%,rgba(255,255,255,.18),transparent 60%),
+      radial-gradient(ellipse 50% 60% at 10% 90%,rgba(30,40,30,.35),transparent 70%),
+      radial-gradient(ellipse 80% 50% at 60% 60%,rgba(120,110,95,.45),transparent 70%),
+      linear-gradient(135deg,#8a8476 0%,#77796b 45%,#5f6b5a 100%);
+    overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:0;opacity:.35;mix-blend-mode:overlay;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .hero-inner{position:relative;z-index:1;max-width:820px;width:100%}
+  .hero .eyebrow{color:#f3efe4;font-size:clamp(1.8rem,3vw,2.6rem)}
+  .hero h1{font-family:var(--serif);font-weight:400;text-transform:uppercase;font-size:clamp(3.4rem,9vw,7.5rem);line-height:.92;letter-spacing:-.01em;margin:6px 0 18px}
+  .hero .caps{color:#f3efe4;font-size:clamp(.75rem,1.2vw,.95rem);letter-spacing:.24em}
+  .hero p.sub{font-size:1rem;color:#ece7dc;margin:14px auto 34px;max-width:520px}
+  .search{display:flex;background:var(--paper);border-radius:999px;padding:6px;box-shadow:0 18px 50px rgba(20,25,18,.28);max-width:680px;margin:0 auto}
+  .search input{flex:1;border:0;background:transparent;padding:14px 22px;font-size:1.02rem;font-weight:400;outline:none;min-width:0;color:var(--ink)}
+  .search input::placeholder{color:var(--faint)}
+  .examples{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:22px}
+  .examples button{all:unset;cursor:pointer;font-size:.8rem;padding:7px 15px;border-radius:999px;border:1px solid rgba(255,255,255,.4);color:#f3efe4;transition:background .2s}
+  .examples button:hover{background:rgba(255,255,255,.14)}
+  #swapResults:empty{display:none}
+  #swapResults{padding:clamp(28px,5vw,72px)}
+
+  /* ---------- swap result ---------- */
+  .sr-head{text-align:center;max-width:780px;margin:0 auto 48px}
+  .sr-head .display{font-size:clamp(2.2rem,5vw,4rem);text-transform:none}
+  .sr-head .tip{font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--muted);margin:0}
+  .sr-body{display:grid;gap:clamp(28px,4vw,64px);grid-template-columns:1fr}
+  @media(min-width:1000px){.sr-body{grid-template-columns:1.35fr 1fr}}
+  .label{font-family:var(--sans);font-weight:500;text-transform:uppercase;letter-spacing:.22em;font-size:.7rem;color:var(--muted);margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .swap{display:grid;grid-template-columns:42px 1fr;gap:4px 14px;padding:20px 0;border-bottom:1px solid var(--line-soft)}
+  .swap .num{font-family:var(--serif);font-style:italic;font-size:1.4rem;color:var(--sage);line-height:1.2}
+  .swap .pair{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+  .swap .from{color:var(--faint);text-decoration:line-through;text-decoration-color:rgba(0,0,0,.2);font-size:.95rem}
+  .swap .arrow{color:var(--clay);font-size:.9rem}
+  .swap .to{font-family:var(--serif);font-size:1.4rem;line-height:1.25;color:var(--forest)}
+  .swap .why{grid-column:2;color:var(--muted);font-size:.9rem}
+  .method{list-style:none;counter-reset:s;margin:0;padding:0}
+  .method li{counter-increment:s;display:grid;grid-template-columns:42px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+  .method li::before{content:counter(s,decimal-leading-zero);font-family:var(--serif);font-style:italic;color:var(--sage);font-size:1.1rem;line-height:1.5}
+
+  /* ---------- shared components ---------- */
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,2.4vw,32px)}
+  .btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--forest);color:#f6f1e7;padding:13px 26px;border-radius:999px;font-family:var(--sans);font-size:.74rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;transition:background .2s;white-space:nowrap}
+  .btn:hover{background:var(--forest-dk)}
+  .btn[disabled]{opacity:.5;cursor:wait}
+  .btn.ghost{background:transparent;color:var(--forest);border:1px solid var(--line)}
+  .btn.ghost:hover{background:var(--sage-lt)}
+  .btn.sm{padding:9px 16px;font-size:.66rem}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .row > input{flex:1 1 240px}
+  .field{display:block;margin:22px 0 8px;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:var(--muted)}
+  .field:first-child{margin-top:0}
+  .hint{text-transform:none;letter-spacing:0;font-weight:300;color:var(--faint);margin-left:6px}
+  input[type=text],input[type=password],textarea{width:100%;padding:13px 16px;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:400}
+  textarea{min-height:84px;resize:vertical}
+  input:focus,textarea:focus{outline:2px solid var(--sage-lt);border-color:var(--sage)}
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pills label{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;padding:9px 16px;border-radius:999px;cursor:pointer;font-size:.88rem;font-weight:400;transition:all .2s}
+  .pills input{position:absolute;opacity:0;pointer-events:none}
+  .pills label:has(input:checked){background:var(--forest);border-color:var(--forest);color:#f6f1e7}
+  .pills label:has(input:focus-visible){outline:2px solid var(--sage)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:var(--sage-lt);color:var(--forest);padding:7px 8px 7px 16px;border-radius:999px;font-size:.88rem;font-weight:400}
+  .chip button{all:unset;cursor:pointer;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:15px;line-height:1;color:var(--forest);background:rgba(46,70,54,.1)}
+  .chip button:hover{background:rgba(46,70,54,.2)}
+  .chip.plain{padding:5px 12px;font-size:.8rem}
+  .empty{color:var(--faint);font-family:var(--serif);font-style:italic;font-size:1.05rem}
+  .saved{font-family:var(--serif);font-style:italic;color:var(--sage);opacity:0;transition:opacity .3s;margin-left:10px}
+  .saved.show{opacity:1}
+  .results{margin-top:36px}
+  .results:empty{display:none}
+  .grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+  .profile-grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));max-width:1200px}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column}
+  .card .kicker{font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;font-weight:500;color:var(--sage)}
+  .card h3{font-family:var(--serif);font-weight:400;font-size:1.6rem;line-height:1.15;margin:6px 0 8px;color:var(--ink)}
+  .card .meta{font-family:var(--serif);font-style:italic;color:var(--muted)}
+  .card h4{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--muted);margin:22px 0 8px}
+  .card ul,.card ol{margin:0;padding-left:18px}
+  .card li{margin:4px 0}
+  .ings{list-style:none;padding:0 !important}
+  .ings li{display:flex;align-items:center;gap:10px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--sage);flex:0 0 auto}
+  .dot.miss{background:transparent;border:1.5px solid var(--clay)}
+  .need{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:var(--clay);margin-left:auto}
+  .goodfor{margin-top:auto;padding-top:22px}
+  .goodfor div{border-top:1px solid var(--line);padding-top:16px;font-family:var(--serif);font-style:italic;font-size:1.02rem;color:var(--forest);line-height:1.5}
+
+  .loading{display:flex;align-items:center;gap:14px;color:var(--muted);padding:24px 0;font-family:var(--serif);font-style:italic;font-size:1.1rem}
+  .loading.center{justify-content:center}
+  .spinner{width:22px;height:22px;border:2px solid var(--line);border-top-color:var(--sage);border-radius:50%;animation:spin .9s linear infinite;flex:0 0 auto}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .error{background:var(--err-lt);color:var(--err);border-radius:14px;padding:16px 20px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;max-width:760px}
+  .error.center{margin:0 auto}
+  .error .btn{background:var(--err)}
+
+  .note-line{font-family:var(--serif);font-style:italic;font-size:1.25rem;color:var(--forest);margin:0 0 28px;max-width:760px}
+
+  /* food log */
+  .log-wrap{display:grid;gap:22px;grid-template-columns:1fr;max-width:1200px}
+  @media(min-width:1100px){.log-wrap{grid-template-columns:1.2fr 1fr;align-items:start}}
+  .entry{padding:18px 0;border-bottom:1px solid var(--line-soft);display:flex;flex-direction:column;gap:10px}
+  .entry:last-child{border-bottom:0}
+  .entry-head{display:flex;gap:12px;align-items:baseline}
+  .entry-head .t{font-family:var(--serif);font-style:italic;color:var(--faint);width:72px;flex:0 0 auto}
+  .entry-head .txt{flex:1;font-weight:400}
+  .x{all:unset;cursor:pointer;color:var(--faint);font-size:1.1rem;line-height:1;padding:0 4px}
+  .x:hover{color:var(--err)}
+  .entry .tags,.entry .note{margin-left:84px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:.7rem;padding:4px 11px;border-radius:999px;font-weight:500;letter-spacing:.03em}
+  .tag.good{background:var(--sage-lt);color:var(--forest)}
+  .tag.some{background:var(--clay-lt);color:#8a5a37}
+  .tag.low{background:#efebe3;color:var(--muted)}
+  .note{font-size:.9rem;color:var(--muted)}
+  .summary h3{font-family:var(--serif);font-weight:400;font-size:1.9rem;line-height:1.2;margin:4px 0 16px}
+
+  .banner{background:var(--clay-lt);color:#7a4f30;padding:14px 22px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+  .banner .btn{background:#8a5a37}
+
+  dialog{border:0;border-radius:20px;padding:0;max-width:500px;width:calc(100% - 32px);box-shadow:0 24px 70px rgba(0,0,0,.3);background:var(--paper);color:var(--ink)}
+  dialog::backdrop{background:rgba(34,53,42,.5);backdrop-filter:blur(2px)}
+  dialog form{padding:34px}
+  dialog .display{font-size:2.2rem}
+
+  .page-foot{display:none}
+
+  /* ---------- mobile ---------- */
+  @media(max-width:860px){
+    .app{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+    aside{padding:18px 16px 0;overflow:visible}
+    .brand{display:flex;align-items:baseline;gap:10px}
+    .brand i{font-size:1rem;margin:0}
+    .brand b{font-size:1.4rem}
+    .brand small{display:none}
+    nav{flex-direction:row;overflow-x:auto;margin:14px -16px 0;padding:0 16px;gap:4px;scrollbar-width:none}
+    nav::-webkit-scrollbar{display:none}
+    nav button{padding:10px 12px;border-radius:10px 10px 0 0;white-space:nowrap;font-size:.66rem}
+    nav button .n{display:none}
+    nav button.feature{padding:10px 12px;margin:0;border:0}
+    nav button.feature span.lbl{font-family:var(--sans);font-size:.66rem;letter-spacing:.2em;font-weight:600}
+    .side-foot{position:absolute;top:18px;right:16px;padding:0}
+    .disclaimer{display:none}
+    .settings-btn{border:0;padding:0}
+    aside{position:relative}
+    .page-foot{display:block;text-align:center;font-size:.75rem;color:var(--faint);padding:24px 16px 32px}
+    .entry .tags,.entry .note{margin-left:0}
+    .page{padding:28px 16px}
+    #swapResults{padding:32px 16px}
+  }
+
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><i>nourish with</i><b>Akshita's<br>Kitchen</b><small>Food you love, made kinder</small></div>
+    <nav id="tabs">
+      <button data-tab="swap" class="feature active"><span class="n">i</span><span class="lbl">Swap It</span></button>
+      <button data-tab="fridge"><span class="n">ii</span>My Fridge</button>
+      <button data-tab="plan"><span class="n">iii</span>Day Plan</button>
+      <button data-tab="log"><span class="n">iv</span>Food Log</button>
+      <button data-tab="profile"><span class="n">v</span>My Profile</button>
+    </nav>
+    <div class="side-foot">
+      <button class="settings-btn" id="openSettings">Settings</button>
+      <p class="disclaimer">Ideas only, not medical advice. Check with your doctor or dietitian for your condition.</p>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div id="keyBanner" class="banner" hidden>
+      <span>To get started, add your free Gemma API key, or switch to offline Ollama.</span>
+      <button class="btn sm" onclick="openSettings()">Open settings</button>
+    </div>
+
+    <!-- SWAP (hero) -->
+    <section class="tab active" id="tab-swap">
+      <div class="hero">
+        <div class="hero-inner">
+          <p class="eyebrow">your favourites,</p>
+          <h1>Swap It</h1>
+          <div class="caps">Lighter &middot; More nourishing &middot; Still yours</div>
+          <p class="sub">Tell me a dish you ate or saw. I'll keep its soul and swap in ingredients that are kinder to your body.</p>
+          <form class="search" id="swapForm">
+            <input type="text" id="swapInput" placeholder="butter chicken with naan..." autocomplete="off" aria-label="Dish to swap">
+            <button class="btn" id="swapBtn" type="submit">Swap it</button>
+          </form>
+          <div class="examples" id="swapExamples"></div>
+        </div>
+      </div>
+      <div id="swapResults"></div>
+      <p class="page-foot">Ideas only, not medical advice. Check with your doctor or dietitian for your condition.</p>
+    </section>
+
+    <!-- FRIDGE -->
+    <section class="tab" id="tab-fridge">
+      <div class="page">
+        <div class="page-head">
+          <p class="eyebrow">cook from what you have</p>
+          <h2 class="display">My Fridge</h2>
+          <p class="lede">Add what's on your shelves and I'll suggest three dishes that use mostly those.</p>
+        </div>
+        <div class="panel" style="max-width:1200px">
+          <form class="row" id="fridgeForm">
+            <input type="text" id="fridgeInput" placeholder="spinach, eggs, paneer (separate with commas to add several)" autocomplete="off">
+            <button class="btn ghost" type="submit">Add</button>
+          </form>
+          <div class="chips" id="fridgeChips"></div>
+          <div class="row" style="margin-top:26px;justify-content:space-between">
+            <button class="btn" id="makeBtn">What can I make?</button>
+            <button class="btn ghost sm" id="fridgeClear">Clear all</button>
+          </div>
+        </div>
+        <div class="results" id="fridgeResults"></div>
+      </div>
+      <p class="page-foot">Ideas only, not medical advice. Check with your doctor or dietitian for your condition.</p>
+    </section>
+
+    <!-- PLAN -->
+    <section class="tab" id="tab-plan">
+      <div class="page">
+        <div class="page-head">
+          <p class="eyebrow">one tap, whole day</p>
+          <h2 class="display">Day Plan</h2>
+          <p class="lede">Breakfast, lunch, a snack and dinner for today, built from your fridge where possible.</p>
+        </div>
+        <div class="row">
+          <button class="btn" id="planBtn">Plan my day</button>
+          <span class="note" id="planHint"></span>
+        </div>
+        <div class="results" id="planResults"></div>
+      </div>
+      <p class="page-foot">Ideas only, not medical advice. Check with your doctor or dietitian for your condition.</p>
+    </section>
+
+    <!-- LOG -->
+    <section class="tab" id="tab-log">
+      <div class="page">
+        <div class="page-head">
+          <p class="eyebrow">no counting, just noticing</p>
+          <h2 class="display">Food Log</h2>
+          <p class="lede">Write what you ate in your own words. I'll notice what nourished you.</p>
+        </div>
+        <div class="log-wrap">
+          <div class="panel">
+            <form class="row" id="logForm">
+              <input type="text" id="logInput" placeholder="2 idlis with sambar and coconut chutney" autocomplete="off">
+              <button class="btn" type="submit">Add</button>
+            </form>
+            <div class="row" style="justify-content:space-between;margin-top:30px">
+              <span class="label" style="border:0;margin:0;padding:0">Today</span>
+              <button class="btn ghost sm" id="summaryBtn">How's my day looking?</button>
+            </div>
+            <div id="logList"></div>
+          </div>
+          <div id="summaryResults"></div>
+        </div>
+      </div>
+      <p class="page-foot">Ideas only, not medical advice. Check with your doctor or dietitian for your condition.</p>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="tab" id="tab-profile">
+      <div class="page">
+        <div class="page-head">
+          <p class="eyebrow">all about you</p>
+          <h2 class="display">My Profile <span id="savedMsg" class="saved" style="font-size:1rem;text-transform:none">saved</span></h2>
+          <p class="lede">Every suggestion in the app is shaped around this.</p>
+        </div>
+        <div class="profile-grid" id="profileForm">
+          <div class="panel">
+            <label class="field">Health conditions</label>
+            <div class="pills">
+              <label><input type="checkbox" value="PCOS">PCOS</label>
+              <label><input type="checkbox" value="Thyroid">Thyroid</label>
+              <label><input type="checkbox" value="Diabetes / insulin resistance">Diabetes / insulin resistance</label>
+            </div>
+            <label class="field" for="pOther">Anything else <span class="hint">e.g. low iron, IBS</span></label>
+            <input type="text" id="pOther">
+            <label class="field">Diet style</label>
+            <div class="pills" id="pDiet">
+              <label><input type="radio" name="diet" value="vegetarian">Veg</label>
+              <label><input type="radio" name="diet" value="non-vegetarian">Non-veg</label>
+              <label><input type="radio" name="diet" value="eggetarian">Eggetarian</label>
+              <label><input type="radio" name="diet" value="vegan">Vegan</label>
+            </div>
+          </div>
+          <div class="panel">
+            <label class="field" for="pLoves">Foods I love <span class="hint">cuisines, dishes, flavours</span></label>
+            <textarea id="pLoves" placeholder="South Indian food, paneer, spicy things, mango, pasta"></textarea>
+            <label class="field" for="pAvoids">Foods I avoid / allergies</label>
+            <textarea id="pAvoids" placeholder="peanuts, mushrooms, too much dairy"></textarea>
+          </div>
+        </div>
+      </div>
+      <p class="page-foot">Ideas only, not medical advice. Check with your doctor or dietitian for your condition.</p>
+    </section>
+  </main>
+</div>
+
+<!-- SETTINGS -->
+<dialog id="settings">
+  <form method="dialog">
+    <p class="eyebrow">behind the scenes</p>
+    <h2 class="display">Settings</h2>
+    <label class="field">AI provider</label>
+    <div class="pills">
+      <label><input type="radio" name="provider" value="gemini">Gemma (Gemini API)</label>
+      <label><input type="radio" name="provider" value="ollama">Ollama (offline)</label>
+    </div>
+    <div id="geminiBox">
+      <label class="field" for="sKey">API key <span class="hint">free at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com</a></span></label>
+      <input type="password" id="sKey" autocomplete="off" placeholder="AIza...">
+      <label class="field" for="sModel">Model</label>
+      <input type="text" id="sModel">
+    </div>
+    <div id="ollamaBox">
+      <label class="field" for="sOllamaUrl">Ollama URL</label>
+      <input type="text" id="sOllamaUrl">
+      <label class="field" for="sOllamaModel">Ollama model</label>
+      <input type="text" id="sOllamaModel">
+    </div>
+    <p class="note" style="margin:18px 0 0">Saved only in this browser.</p>
+    <div class="row" style="justify-content:flex-end;margin-top:22px">
+      <button class="btn ghost" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn" value="save">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+/* ---------- storage ---------- */
+const store = {
+  get(k, d) { try { const v = JSON.parse(localStorage.getItem('ak:' + k)); return v ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('ak:' + k, JSON.stringify(v)); } catch {} }
+};
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+const DEFAULT_SETTINGS = {
+  provider: 'gemini', apiKey: '', model: 'gemma-4-26b-a4b-it',
+  ollamaUrl: 'http://localhost:11434/api/chat', ollamaModel: 'gemma3:4b'
+};
+let settings = { ...DEFAULT_SETTINGS, ...store.get('settings', {}) };
+let profile = store.get('profile', { conditions: [], other: '', diet: 'vegetarian', loves: '', avoids: '' });
+let fridge = store.get('fridge', []);
+let log = store.get('log', []);
+
+const today = () => new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
+
+/* ---------- helpers ---------- */
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+// Keep the app calorie-free and emoji-free even if the model slips.
+function clean(s) {
+  return esc(String(s ?? '')
+    .replace(/\(?\s*~?\d[\d,.\s–-]*\s*(k?cals?|kilocalories|calories)\b\)?/gi, '')
+    .replace(/[\p{Extended_Pictographic}️‍]/gu, '')
+    .trim());
+}
+const arr = v => Array.isArray(v) ? v : (v ? [v] : []);
+
+/* ---------- AI ---------- */
+class FriendlyError extends Error {}
+
+async function callModel(prompt) {
+  if (settings.provider === 'ollama') {
+    let r;
+    try {
+      r = await fetch(settings.ollamaUrl, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: settings.ollamaModel, messages: [{ role: 'user', content: prompt }], stream: false, format: 'json', options: { temperature: 0.7 } })
+      });
+    } catch {
+      throw new FriendlyError("Couldn't reach Ollama. Is it running? (See the README for the OLLAMA_ORIGINS tip.)");
+    }
+    if (!r.ok) throw new FriendlyError(`Ollama said: ${r.status} ${(await r.text()).slice(0, 160)}`);
+    const d = await r.json();
+    return d.message?.content || '';
+  }
+
+  if (!settings.apiKey) throw new FriendlyError('Please add your API key in Settings first.');
+  const model = settings.model.trim().replace(/^models\//, '');
+  let r;
+  try {
+    r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': settings.apiKey },
+      body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7 } })
+    });
+  } catch {
+    throw new FriendlyError("Couldn't reach the AI. Check your internet connection.");
+  }
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new FriendlyError(d.error?.message || `The AI service returned an error (${r.status}).`);
+  const parts = d.candidates?.[0]?.content?.parts || [];
+  const text = parts.filter(p => p.thought !== true).map(p => p.text || '').join('');
+  if (!text.trim()) throw new FriendlyError('The AI sent back an empty reply.');
+  return text;
+}
+
+function parseJSON(text) {
+  const t = text.replace(/```(?:json)?/gi, '');
+  const a = t.indexOf('{'), b = t.lastIndexOf('}');
+  if (a < 0 || b <= a) throw new FriendlyError("The AI's answer came back a bit jumbled.");
+  try { return JSON.parse(t.slice(a, b + 1)); }
+  catch { throw new FriendlyError("The AI's answer came back a bit jumbled."); }
+}
+
+async function askAI(task, shape) {
+  return parseJSON(await callModel(buildPrompt(task, shape)));
+}
+
+function profileText() {
+  const c = [...profile.conditions, profile.other].filter(Boolean).join(', ') || 'none listed';
+  return [
+    `- Health conditions she manages through food: ${c}`,
+    `- Diet style: ${profile.diet || 'not specified'} (follow this strictly)`,
+    `- Foods she loves: ${profile.loves || 'not specified'}`,
+    `- Foods she avoids / allergies: ${profile.avoids || 'none'} (NEVER include these)`
+  ].join('\n');
+}
+
+function buildPrompt(task, shape) {
+  return `You are a warm, encouraging home-cooking helper for Akshita, who manages her health through food.
+
+ABOUT AKSHITA:
+${profileText()}
+
+RULES:
+- Never mention calories, kcal, or any calorie numbers. Never talk about weight loss.
+- Focus on nourishment, balance and adding good things, not restriction. No guilt, no "bad food" or "cheat" language.
+- Keep food practical and home-cookable; Indian home-kitchen friendly is great when it fits her tastes.
+- Tie health reasons to her specific conditions in simple, gentle words. You are not a doctor; don't make medical claims.
+- Do not use emojis.
+
+TASK:
+${task}
+
+Reply with ONLY valid JSON (no markdown, no extra text) in exactly this shape:
+${shape}`;
+}
+
+/* Runs an AI request into a container with loading + friendly error + retry */
+async function runInto(el, loadingMsg, fn, render, btn, center) {
+  const c = center ? ' center' : '';
+  el.innerHTML = `<div class="loading${c}"><div class="spinner"></div><span>${esc(loadingMsg)}</span></div>`;
+  if (btn) btn.disabled = true;
+  try {
+    const data = await fn();
+    el.innerHTML = render(data);
+  } catch (e) {
+    console.error(e);
+    const msg = e instanceof FriendlyError ? e.message : 'Something went wrong.';
+    el.innerHTML = `<div class="error${c}"><span>${esc(msg)} Let's try again.</span><button class="btn sm">Try again</button></div>`;
+    el.querySelector('button').onclick = () => runInto(el, loadingMsg, fn, render, btn, center);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+/* ---------- tabs ---------- */
+function showTab(name) {
+  $$('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  $$('section.tab').forEach(s => s.classList.toggle('active', s.id === 'tab-' + name));
+  $('#main').scrollTop = 0;
+  if (name === 'plan') updatePlanHint();
+}
+$('#tabs').onclick = e => { const b = e.target.closest('button'); if (b) showTab(b.dataset.tab); };
+
+/* ---------- settings ---------- */
+const dlg = $('#settings');
+function syncProviderBoxes() {
+  const p = $('input[name=provider]:checked')?.value;
+  $('#geminiBox').hidden = p !== 'gemini';
+  $('#ollamaBox').hidden = p !== 'ollama';
+}
+function openSettings() {
+  $$('input[name=provider]').forEach(r => r.checked = r.value === settings.provider);
+  $('#sKey').value = settings.apiKey;
+  $('#sModel').value = settings.model;
+  $('#sOllamaUrl').value = settings.ollamaUrl;
+  $('#sOllamaModel').value = settings.ollamaModel;
+  syncProviderBoxes();
+  dlg.showModal();
+}
+$('#openSettings').onclick = openSettings;
+$$('input[name=provider]').forEach(r => r.onchange = syncProviderBoxes);
+dlg.addEventListener('close', () => {
+  if (dlg.returnValue !== 'save') return;
+  settings = {
+    provider: $('input[name=provider]:checked')?.value || 'gemini',
+    apiKey: $('#sKey').value.trim(),
+    model: $('#sModel').value.trim() || DEFAULT_SETTINGS.model,
+    ollamaUrl: $('#sOllamaUrl').value.trim() || DEFAULT_SETTINGS.ollamaUrl,
+    ollamaModel: $('#sOllamaModel').value.trim() || DEFAULT_SETTINGS.ollamaModel
+  };
+  store.set('settings', settings);
+  updateBanner();
+});
+function updateBanner() { $('#keyBanner').hidden = !(settings.provider === 'gemini' && !settings.apiKey); }
+
+/* ---------- profile ---------- */
+function loadProfile() {
+  $$('#profileForm input[type=checkbox]').forEach(c => c.checked = profile.conditions.includes(c.value));
+  $('#pOther').value = profile.other;
+  $$('#pDiet input').forEach(r => r.checked = r.value === profile.diet);
+  $('#pLoves').value = profile.loves;
+  $('#pAvoids').value = profile.avoids;
+}
+let savedTimer;
+function saveProfile() {
+  profile = {
+    conditions: $$('#profileForm input[type=checkbox]:checked').map(c => c.value),
+    other: $('#pOther').value.trim(),
+    diet: $('#pDiet input:checked')?.value || '',
+    loves: $('#pLoves').value.trim(),
+    avoids: $('#pAvoids').value.trim()
+  };
+  store.set('profile', profile);
+  $('#savedMsg').classList.add('show');
+  clearTimeout(savedTimer);
+  savedTimer = setTimeout(() => $('#savedMsg').classList.remove('show'), 1200);
+}
+$('#profileForm').addEventListener('input', saveProfile);
+$('#profileForm').addEventListener('change', saveProfile);
+
+/* ---------- swap (hero) ---------- */
+const EXAMPLES = ['butter chicken with naan', 'bubble tea', 'pizza', 'chole bhature', 'pasta alfredo', 'gulab jamun'];
+$('#swapExamples').innerHTML = EXAMPLES.map(x => `<button type="button">${esc(x)}</button>`).join('');
+$('#swapExamples').onclick = e => { const b = e.target.closest('button'); if (b) { $('#swapInput').value = b.textContent; doSwap(); } };
+$('#swapForm').onsubmit = e => { e.preventDefault(); doSwap(); };
+
+function doSwap() {
+  const dish = $('#swapInput').value.trim();
+  const out = $('#swapResults');
+  if (!dish) { $('#swapInput').focus(); return; }
+  runInto(out, `Finding a nourishing twist on ${dish}...`, () => askAI(
+    `She wants a lighter, more nourishing version of: "${dish}".
+Keep the soul and flavour of the dish so she still enjoys it. Respect her diet style, lean into foods she loves, and never use foods she avoids.
+List 3-6 ingredient swaps (original -> swap -> short why tied to her conditions). Then give short steps (4-7) to make the swapped version.`,
+    `{"dish":"string","new_name":"an appetising name for the swapped version","swaps":[{"original":"string","swap":"string","why":"string"}],"how_to":["string"],"tip":"one encouraging sentence"}`
+  ), d => `
+    <div class="sr-head">
+      <div class="caps">Your version of ${clean(d.dish || dish)}</div>
+      <h2 class="display">${clean(d.new_name || 'A nourishing swap')}</h2>
+      ${d.tip ? `<p class="tip">${clean(d.tip)}</p>` : ''}
+    </div>
+    <div class="sr-body">
+      <div>
+        <h3 class="label">The swaps</h3>
+        ${arr(d.swaps).map((s, i) => `<div class="swap">
+          <span class="num">${String(i + 1).padStart(2, '0')}</span>
+          <div class="pair"><span class="from">${clean(s.original)}</span><span class="arrow">&rarr;</span><span class="to">${clean(s.swap)}</span></div>
+          <span class="why">${clean(s.why)}</span>
+        </div>`).join('')}
+      </div>
+      <div>
+        <h3 class="label">How to make it</h3>
+        <ol class="method">${arr(d.how_to).map(s => `<li><span>${clean(s)}</span></li>`).join('')}</ol>
+      </div>
+    </div>`, $('#swapBtn'), true);
+  requestAnimationFrame(() => out.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+}
+
+/* ---------- fridge ---------- */
+function renderFridge() {
+  $('#fridgeChips').innerHTML = fridge.length
+    ? fridge.map((f, i) => `<span class="chip">${esc(f)}<button data-i="${i}" aria-label="Remove ${esc(f)}">&times;</button></span>`).join('')
+    : '<span class="empty">Your fridge is empty. Add a few things you have.</span>';
+}
+$('#fridgeForm').onsubmit = e => {
+  e.preventDefault();
+  const items = $('#fridgeInput').value.split(',').map(s => s.trim()).filter(Boolean);
+  items.forEach(it => { if (!fridge.some(f => f.toLowerCase() === it.toLowerCase())) fridge.push(it); });
+  $('#fridgeInput').value = '';
+  store.set('fridge', fridge);
+  renderFridge();
+};
+$('#fridgeChips').onclick = e => {
+  const b = e.target.closest('button[data-i]'); if (!b) return;
+  fridge.splice(+b.dataset.i, 1); store.set('fridge', fridge); renderFridge();
+};
+$('#fridgeClear').onclick = () => { fridge = []; store.set('fridge', fridge); renderFridge(); };
+
+$('#makeBtn').onclick = () => {
+  const out = $('#fridgeResults');
+  if (!fridge.length) { out.innerHTML = '<p class="empty">Add a few ingredients first, then I can help.</p>'; return; }
+  const items = [...fridge];
+  runInto(out, 'Peeking into your fridge...', () => askAI(
+    `She has these ingredients at home: ${items.join(', ')}.
+Suggest 3 different recipes that use MOSTLY these ingredients (assume basic pantry staples like salt, oil, common Indian spices, water are available).
+For every ingredient, set "have" to true if it's in her list or a basic staple, false if she'd need to get it. Keep missing items to a minimum.
+Keep steps short (4-6 steps). "why" should be 1-2 sentences linking the dish to her conditions.`,
+    `{"recipes":[{"name":"string","time":"e.g. 20 min","ingredients":[{"item":"string","have":true}],"steps":["string"],"why":"string"}]}`
+  ), d => `<div class="grid">${arr(d.recipes).map(recipeCard).join('')}</div>`, $('#makeBtn'));
+};
+
+function recipeCard(r, i) {
+  const ings = arr(r.ingredients).map(x => {
+    const o = typeof x === 'string' ? { item: x, have: true } : x;
+    const miss = o.have === false;
+    return `<li><span class="dot${miss ? ' miss' : ''}"></span>${clean(o.item)}${miss ? '<span class="need">to get</span>' : ''}</li>`;
+  }).join('');
+  return `<article class="card">
+    <span class="kicker">Recipe ${String(i + 1).padStart(2, '0')}</span>
+    <h3>${clean(r.name)}</h3>
+    ${r.time ? `<span class="meta">${clean(r.time)}</span>` : ''}
+    <h4>Ingredients</h4><ul class="ings">${ings}</ul>
+    <h4>Method</h4><ol>${arr(r.steps).map(s => `<li>${clean(s)}</li>`).join('')}</ol>
+    ${r.why ? `<div class="goodfor"><h4 style="margin-top:0">Why it's good for you</h4><div>${clean(r.why)}</div></div>` : ''}
+  </article>`;
+}
+
+/* ---------- day plan ---------- */
+function updatePlanHint() {
+  $('#planHint').textContent = fridge.length
+    ? `Using your fridge: ${fridge.join(', ')}`
+    : 'Tip: add items in My Fridge so the plan uses what you already have.';
+}
+$('#planBtn').onclick = () => {
+  const items = [...fridge];
+  runInto($('#planResults'), 'Planning a nourishing day for you...', () => askAI(
+    `Make a simple, balanced food plan for today: breakfast, lunch, snack, dinner.
+${items.length ? `Use these items from her fridge where possible: ${items.join(', ')}.` : 'She has not listed fridge items, so use common, easy-to-find ingredients.'}
+Each meal: a dish name, a one-line description, which fridge items it uses, 2-4 quick steps, and a one-sentence "why" tied to her conditions.
+Aim for protein and fiber at every meal, and variety across the day.`,
+    `{"meals":[{"meal":"Breakfast","name":"string","description":"string","uses":["fridge item"],"steps":["string"],"why":"string"}],"note":"one warm sentence about the day"}`
+  ), d => `${d.note ? `<p class="note-line">${clean(d.note)}</p>` : ''}
+    <div class="grid">${arr(d.meals).map(m => `<article class="card">
+      <span class="kicker">${clean(m.meal)}</span>
+      <h3>${clean(m.name)}</h3>
+      <span class="meta">${clean(m.description)}</span>
+      ${arr(m.uses).length ? `<div class="chips">${arr(m.uses).map(u => `<span class="chip plain">${clean(u)}</span>`).join('')}</div>` : ''}
+      ${arr(m.steps).length ? `<h4>Quick steps</h4><ol>${arr(m.steps).map(s => `<li>${clean(s)}</li>`).join('')}</ol>` : ''}
+      ${m.why ? `<div class="goodfor"><div>${clean(m.why)}</div></div>` : ''}
+    </article>`).join('')}</div>`, $('#planBtn'));
+};
+
+/* ---------- food log ---------- */
+const NUTRIENTS = [
+  ['protein', 'Protein'], ['fiber', 'Fiber'], ['veggies', 'Veggies'], ['whole_grains', 'Whole grains'], ['added_sugar', 'Added sugar']
+];
+const LEVELS = ['good', 'some', 'low'];
+
+function tagHTML(tags) {
+  if (!tags) return '';
+  return `<div class="tags">${NUTRIENTS.map(([k, label]) => {
+    const v = String(tags[k] || '').toLowerCase();
+    if (!LEVELS.includes(v)) return '';
+    // Added sugar is an amount, so "low" is the green end of the scale.
+    const cls = k === 'added_sugar' ? (v === 'some' ? 'some' : 'good') : v;
+    return `<span class="tag ${cls}">${label}: ${v}</span>`;
+  }).join('')}</div>`;
+}
+
+function todaysLog() { return log.filter(e => e.date === today()); }
+
+function renderLog() {
+  const items = todaysLog();
+  $('#logList').innerHTML = items.length ? items.map(e => `
+    <div class="entry">
+      <div class="entry-head"><span class="t">${esc(e.time)}</span><span class="txt">${esc(e.text)}</span>
+        <button class="x" data-del="${e.id}" aria-label="Delete entry">&times;</button></div>
+      ${e.status === 'pending' ? '<div class="loading" style="padding:0 0 0 84px;font-size:.95rem"><div class="spinner" style="width:14px;height:14px"></div><span>noticing the good stuff...</span></div>' : ''}
+      ${e.status === 'error' ? `<div class="note">Couldn't tag this one. <button class="btn ghost sm" data-retry="${e.id}">Try again</button></div>` : ''}
+      ${e.status === 'done' ? tagHTML(e.tags) + (e.note ? `<div class="note">${clean(e.note)}</div>` : '') : ''}
+    </div>`).join('') : '<p class="empty" style="margin:16px 0 0">Nothing logged yet today.</p>';
+}
+
+function saveLog() { store.set('log', log); renderLog(); }
+
+async function tagEntry(entry) {
+  entry.status = 'pending'; saveLog();
+  try {
+    const d = await askAI(
+      `She ate: "${entry.text}".
+Tag this with simple nutrient labels.
+For protein, fiber, veggies, whole_grains use: "good" (plenty), "some", or "low" (little or none).
+For added_sugar give the amount: "low" (little or none) or "some" (anything noticeable). Keep it neutral, never alarming.
+Add a short, warm note (one sentence) noticing something nourishing about it, or a gentle idea to add next time. No guilt.`,
+      `{"tags":{"protein":"good|some|low","fiber":"good|some|low","veggies":"good|some|low","whole_grains":"good|some|low","added_sugar":"low|some"},"note":"string"}`
+    );
+    entry.tags = d.tags || {}; entry.note = d.note || ''; entry.status = 'done';
+  } catch (e) {
+    console.error(e); entry.status = 'error';
+  }
+  saveLog();
+}
+
+$('#logForm').onsubmit = e => {
+  e.preventDefault();
+  const text = $('#logInput').value.trim();
+  if (!text) return;
+  const entry = { id: Date.now() + '' + Math.random().toString(36).slice(2, 6), date: today(), time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }), text, status: 'pending' };
+  log.push(entry);
+  $('#logInput').value = '';
+  tagEntry(entry);
+};
+$('#logList').onclick = e => {
+  const del = e.target.closest('[data-del]'), re = e.target.closest('[data-retry]');
+  if (del) { log = log.filter(x => x.id !== del.dataset.del); saveLog(); }
+  if (re) { const en = log.find(x => x.id === re.dataset.retry); if (en) tagEntry(en); }
+};
+
+$('#summaryBtn').onclick = () => {
+  const out = $('#summaryResults');
+  const items = todaysLog();
+  if (!items.length) { out.innerHTML = '<div class="panel"><p class="empty" style="margin:0">Log a meal or two and I\'ll share how your day is looking.</p></div>'; return; }
+  const list = items.map(e => `- ${e.time}: ${e.text}`).join('\n');
+  runInto(out, 'Looking over your day...', () => askAI(
+    `Here is what she has eaten so far today:
+${list}
+Give a gentle, encouraging summary of the day's balance, like "great on protein, try adding some greens at dinner".
+Celebrate what went well first. Give at most 2 small, kind ideas for the rest of the day. Never guilt, never restrict.`,
+    `{"headline":"short warm one-liner","overall":{"protein":"good|some|low","fiber":"good|some|low","veggies":"good|some|low","whole_grains":"good|some|low","added_sugar":"low|some"},"wins":["string"],"ideas":["string"]}`
+  ), d => `<div class="panel summary">
+      <p class="eyebrow">your day so far</p>
+      <h3>${clean(d.headline || 'Looking nourishing')}</h3>
+      ${tagHTML(d.overall)}
+      ${arr(d.wins).length ? `<h4 class="label" style="margin-top:26px">What's going well</h4><ul>${arr(d.wins).map(w => `<li>${clean(w)}</li>`).join('')}</ul>` : ''}
+      ${arr(d.ideas).length ? `<h4 class="label" style="margin-top:22px">Little ideas</h4><ul>${arr(d.ideas).map(w => `<li>${clean(w)}</li>`).join('')}</ul>` : ''}
+    </div>`, $('#summaryBtn'));
+};
+
+/* ---------- init ---------- */
+// Entries left "pending" from a closed tab can't finish; let her retry them.
+log.forEach(e => { if (e.status === 'pending') e.status = 'error'; });
+loadProfile();
+renderFridge();
+renderLog();
+updateBanner();
+showTab('swap');
+</script>
+</body>
+</html>
