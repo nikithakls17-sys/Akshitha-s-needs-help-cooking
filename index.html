@@ -9,9 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --cream:#f6f1e7; --paper:#fbf8f2; --line:#e3dccd; --line-soft:#ece6da;
-    --ink:#2a2924; --muted:#7b7566; --faint:#a59e8e;
-    --sage:#6f8a6a; --sage-lt:#e4ebdf; --forest:#2e4636; --forest-dk:#22352a;
+    --cream:#f7ecdc; --paper:#fdf6ea; --line:#e3d4bc; --line-soft:#ecdfca;
+    --ink:#2a1f1a; --muted:#7a6c5c; --faint:#a8987f;
+    --sage:#6f8a6a; --sage-lt:#e4ebdf; --forest:#2f4a2c; --forest-dk:#243d20;
+    --tomato:#d8432a; --chili:#9e2a1f; --mustard:#e2b13c; --blush:#f2c3bc; --leaf:#5b8a47; --leaf-dk:#2c4a26;
     --stone:#8f8a7e; --clay:#b9855f; --clay-lt:#f1e4d6;
     --err:#a64b36; --err-lt:#f6e5df;
     --serif:"Playfair Display","Bodoni 72","Didot",Georgia,serif;
@@ -211,9 +212,137 @@
     #swapResults{padding:32px 16px}
   }
 
+  /* ---------- folk botanical layer ---------- */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.14;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  aside{border-right:2px solid var(--ink)}
+  .brand i{color:var(--blush)}
+  nav button.active{background:var(--cream);color:var(--ink);box-shadow:3px 3px 0 var(--tomato)}
+  nav button.active .n{color:var(--tomato)}
+  .side-art{display:block;width:100%;max-width:220px;margin:8px 0 4px}
+  .eyebrow{color:var(--tomato)}
+
+  .hero{background:
+      radial-gradient(ellipse 45% 50% at 50% 52%,rgba(18,30,16,.6),transparent 80%),
+      linear-gradient(160deg,#3f6236 0%,#2f4a2c 55%,#243d20 100%)}
+  .hero::after{opacity:.5}
+  .hero .eyebrow{color:var(--blush)}
+  .hero .caps{color:var(--mustard)}
+  .hero-inner{max-width:660px}
+  .art{position:absolute;z-index:0;pointer-events:none;overflow:visible;height:auto}
+  .search{border:2px solid var(--ink);box-shadow:6px 6px 0 var(--tomato)}
+  .examples button{border-color:rgba(253,246,234,.55)}
+  .examples button:hover{background:var(--tomato);border-color:var(--ink)}
+
+  .btn{background:var(--tomato);color:#fff8ee;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transition:transform .15s,box-shadow .15s,background .2s}
+  .btn:hover{background:var(--chili);transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+  .search .btn,.search .btn:hover,.search .btn:active{box-shadow:none;transform:none}
+  .btn.ghost{background:var(--paper);color:var(--ink);border-color:var(--ink)}
+  .btn.ghost:hover{background:var(--blush)}
+  .error .btn{background:var(--err)}
+
+  .panel,.card,.error{border:2px solid var(--ink)}
+  .panel,.card{box-shadow:6px 6px 0 var(--leaf)}
+  .grid > .card:nth-child(3n+2){box-shadow:6px 6px 0 var(--tomato)}
+  .grid > .card:nth-child(3n){box-shadow:6px 6px 0 var(--mustard)}
+  .card .kicker{color:var(--tomato)}
+  .card h3{color:var(--ink)}
+  .goodfor div{color:var(--leaf-dk);border-top:2px dashed var(--line)}
+  .dot{background:var(--leaf);border:1.5px solid var(--ink);width:9px;height:9px}
+  .dot.miss{background:var(--paper);border-color:var(--tomato)}
+  .need{color:var(--tomato)}
+  .chip{background:var(--paper);border:1.5px solid var(--ink);color:var(--ink)}
+  .chip button{background:var(--blush);color:var(--chili)}
+  .pills label{border:1.5px solid var(--ink)}
+  .pills label:has(input:checked){background:var(--leaf-dk);border-color:var(--ink);box-shadow:2px 2px 0 var(--tomato)}
+  input[type=text],input[type=password],textarea{border:1.5px solid var(--ink)}
+  input:focus,textarea:focus{outline:3px solid var(--blush);border-color:var(--ink)}
+  .label{border-bottom:2px solid var(--ink);color:var(--ink)}
+  .swap{border-bottom:1.5px dashed var(--line)}
+  .swap .num,.method li::before{color:var(--tomato)}
+  .swap .arrow{color:var(--tomato)}
+  .swap .to{color:var(--leaf-dk)}
+  .method li{border-bottom:1.5px dashed var(--line)}
+  .tag{border:1.5px solid var(--ink)}
+  .tag.good{background:#dfe8d2;color:var(--leaf-dk)}
+  .tag.some{background:#f7e3ad;color:#6e4f0e}
+  .tag.low{background:#f8dcd6;color:var(--chili)}
+  .spinner{border-color:var(--blush);border-top-color:var(--tomato)}
+  .banner{border-bottom:2px solid var(--ink)}
+  .banner .btn{background:var(--chili)}
+  .x:hover{color:var(--tomato)}
+  dialog{border:2px solid var(--ink);box-shadow:8px 8px 0 var(--tomato)}
+
+  .vine{display:block;width:110px;height:auto;margin:10px auto 0}
+  .page-head{position:relative;max-width:none;padding-right:260px}
+  .head-art{position:absolute;right:0;top:-14px;width:240px;height:auto}
+
+  @media(max-width:860px){
+    aside{border-right:0;border-bottom:2px solid var(--ink)}
+    .side-art{display:none}
+    .page-head{padding-right:0}
+    .head-art{display:none}
+    .art{opacity:.6;transform-origin:center;scale:.65}
+    .art.m-hide{display:none}
+  }
 </style>
 </head>
 <body>
+<!-- Hand-drawn folk botanicals, reused across the app -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-strawberry" viewBox="0 0 100 120">
+      <path d="M50 114C24 104 8 76 12 52 16 34 34 30 50 36 66 30 84 34 88 52 92 76 76 104 50 114Z" fill="#d8432a" stroke="#2a1f1a" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M50 102C36 94 26 76 28 58 33 48 44 48 50 52 56 48 67 48 72 58 74 76 64 94 50 102Z" fill="#ee7b5e"/>
+      <path d="M50 54V96M39 61 45 84M61 61 55 84" stroke="#f6b49c" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <g fill="#f3d27a" stroke="#2a1f1a" stroke-width="1">
+        <ellipse cx="23" cy="56" rx="2" ry="3"/><ellipse cx="20" cy="72" rx="2" ry="3"/><ellipse cx="27" cy="88" rx="2" ry="3"/>
+        <ellipse cx="77" cy="56" rx="2" ry="3"/><ellipse cx="80" cy="72" rx="2" ry="3"/><ellipse cx="73" cy="88" rx="2" ry="3"/>
+        <ellipse cx="40" cy="104" rx="2" ry="3"/><ellipse cx="60" cy="104" rx="2" ry="3"/>
+      </g>
+      <path d="M50 41 33 27 44 32 38 15 50 30 56 11 58 31 72 19 64 36 79 34 62 43Z" fill="#3f6b35" stroke="#2a1f1a" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M53 25C54 15 59 8 67 4" stroke="#2a1f1a" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M53 25C54 15 59 8 67 4" stroke="#5b8a47" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-chili" viewBox="0 0 70 170">
+      <path d="M40 30C56 36 58 66 52 100 46 132 28 156 12 164 20 138 22 108 20 78 18 52 22 30 40 30Z" fill="#9e2a1f" stroke="#2a1f1a" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M40 48C46 76 42 114 24 148" stroke="#f2c3bc" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <g fill="#e2b13c" stroke="#2a1f1a" stroke-width="1">
+        <ellipse cx="34" cy="62" rx="3" ry="4.5"/><ellipse cx="44" cy="76" rx="3" ry="4.5"/><ellipse cx="31" cy="86" rx="3" ry="4.5"/>
+        <ellipse cx="41" cy="98" rx="3" ry="4.5"/><ellipse cx="29" cy="112" rx="3" ry="4.5"/><ellipse cx="34" cy="126" rx="3" ry="4.5"/>
+      </g>
+      <path d="M20 37C24 22 46 20 56 34 46 30 32 30 20 37Z" fill="#6b8f3a" stroke="#2a1f1a" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M38 25C36 12 44 4 52 6 58 8 58 16 52 17 48 18 47 13 50 12" stroke="#2a1f1a" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M38 25C36 12 44 4 52 6 58 8 58 16 52 17 48 18 47 13 50 12" stroke="#8fb05a" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-leaf" viewBox="0 0 120 70">
+      <path d="M4 36C24 8 76 0 116 34 78 64 28 66 4 36Z" fill="#5b8a47" stroke="#2a1f1a" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M10 36C46 32 80 32 110 34M34 34 26 20M54 33 46 14M76 33 72 15M34 36 30 50M54 36 50 54M76 36 76 53" stroke="#2c4a26" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-daisy" viewBox="0 0 60 60">
+      <g fill="#fdf6ea" stroke="#2a1f1a" stroke-width="2">
+        <ellipse cx="30" cy="15" rx="8" ry="13"/>
+        <ellipse cx="30" cy="15" rx="8" ry="13" transform="rotate(60 30 30)"/>
+        <ellipse cx="30" cy="15" rx="8" ry="13" transform="rotate(120 30 30)"/>
+        <ellipse cx="30" cy="15" rx="8" ry="13" transform="rotate(180 30 30)"/>
+        <ellipse cx="30" cy="15" rx="8" ry="13" transform="rotate(240 30 30)"/>
+        <ellipse cx="30" cy="15" rx="8" ry="13" transform="rotate(300 30 30)"/>
+      </g>
+      <circle cx="30" cy="30" r="8" fill="#e2b13c" stroke="#2a1f1a" stroke-width="2"/>
+      <circle cx="30" cy="30" r="3" fill="#c98a1e"/>
+    </symbol>
+    <symbol id="i-vine" viewBox="0 0 140 70">
+      <path d="M4 64C30 62 44 30 76 26 100 23 116 38 108 50 102 58 90 54 92 46 94 40 102 42 100 47" stroke="#2a1f1a" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+      <path d="M4 64C30 62 44 30 76 26 100 23 116 38 108 50 102 58 90 54 92 46 94 40 102 42 100 47" stroke="#8fb05a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-petal" viewBox="0 0 40 80">
+      <path d="M20 78C6 60 2 28 20 3 38 28 34 60 20 78Z" fill="#f2c3bc" stroke="#b8453a" stroke-width="1.5"/>
+      <path d="M20 74V14M20 50 12 30M20 50 28 30M20 64 10 46M20 64 30 46" stroke="#d9796c" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
 <div class="app">
   <aside>
     <div class="brand"><i>nourish with</i><b>Akshita's<br>Kitchen</b><small>Food you love, made kinder</small></div>
@@ -225,6 +354,13 @@
       <button data-tab="profile"><span class="n">v</span>My Profile</button>
     </nav>
     <div class="side-foot">
+      <svg class="side-art" viewBox="0 0 220 110" aria-hidden="true">
+        <use href="#i-vine" x="0" y="40" width="140" height="70"/>
+        <use href="#i-leaf" x="96" y="56" width="80" height="47" transform="rotate(-20 136 80)"/>
+        <use href="#i-strawberry" x="150" y="18" width="60" height="72" transform="rotate(14 180 54)"/>
+        <use href="#i-daisy" x="112" y="6" width="38" height="38"/>
+        <use href="#i-petal" x="64" y="10" width="20" height="40" transform="rotate(-30 74 30)"/>
+      </svg>
       <button class="settings-btn" id="openSettings">Settings</button>
       <p class="disclaimer">Ideas only, not medical advice. Check with your doctor or dietitian for your condition.</p>
     </div>
@@ -239,6 +375,22 @@
     <!-- SWAP (hero) -->
     <section class="tab active" id="tab-swap">
       <div class="hero">
+        <!-- left cluster -->
+        <svg class="art" viewBox="0 0 120 70" style="left:-60px;top:-6px;width:clamp(170px,19vw,290px);transform:rotate(28deg)" aria-hidden="true"><use href="#i-leaf"/></svg>
+        <svg class="art" viewBox="0 0 100 120" style="left:5%;top:10%;width:clamp(90px,9vw,150px);transform:rotate(-18deg)" aria-hidden="true"><use href="#i-strawberry"/></svg>
+        <svg class="art" viewBox="0 0 60 60" style="left:17%;top:5%;width:clamp(36px,4vw,62px)" aria-hidden="true"><use href="#i-daisy"/></svg>
+        <svg class="art m-hide" viewBox="0 0 140 70" style="left:1%;top:48%;width:clamp(100px,10vw,160px)" aria-hidden="true"><use href="#i-vine"/></svg>
+        <svg class="art m-hide" viewBox="0 0 40 80" style="left:13%;top:40%;width:clamp(24px,2.4vw,38px);transform:rotate(24deg)" aria-hidden="true"><use href="#i-petal"/></svg>
+        <svg class="art" viewBox="0 0 70 170" style="left:4%;bottom:-50px;width:clamp(60px,6.5vw,105px);transform:rotate(-38deg)" aria-hidden="true"><use href="#i-chili"/></svg>
+        <svg class="art m-hide" viewBox="0 0 40 80" style="left:15%;bottom:8%;width:clamp(26px,2.6vw,40px);transform:rotate(-24deg)" aria-hidden="true"><use href="#i-petal"/></svg>
+        <!-- right cluster -->
+        <svg class="art" viewBox="0 0 70 170" style="right:7%;top:-46px;width:clamp(56px,6vw,96px);transform:rotate(210deg)" aria-hidden="true"><use href="#i-chili"/></svg>
+        <svg class="art m-hide" viewBox="0 0 40 80" style="right:17%;top:9%;width:clamp(26px,2.6vw,40px);transform:rotate(30deg)" aria-hidden="true"><use href="#i-petal"/></svg>
+        <svg class="art" viewBox="0 0 60 60" style="right:2%;top:6%;width:clamp(34px,3.6vw,56px)" aria-hidden="true"><use href="#i-daisy"/></svg>
+        <svg class="art m-hide" viewBox="0 0 120 70" style="right:-70px;top:32%;width:clamp(160px,17vw,260px);transform:rotate(-150deg)" aria-hidden="true"><use href="#i-leaf"/></svg>
+        <svg class="art m-hide" viewBox="0 0 140 70" style="right:9%;top:52%;width:clamp(90px,9vw,140px);transform:scaleX(-1)" aria-hidden="true"><use href="#i-vine"/></svg>
+        <svg class="art" viewBox="0 0 100 120" style="right:4%;bottom:-36px;width:clamp(120px,13vw,215px);transform:rotate(16deg)" aria-hidden="true"><use href="#i-strawberry"/></svg>
+        <svg class="art m-hide" viewBox="0 0 60 60" style="right:19%;bottom:9%;width:clamp(30px,3vw,48px)" aria-hidden="true"><use href="#i-daisy"/></svg>
         <div class="hero-inner">
           <p class="eyebrow">your favourites,</p>
           <h1>Swap It</h1>
@@ -262,6 +414,7 @@
           <p class="eyebrow">cook from what you have</p>
           <h2 class="display">My Fridge</h2>
           <p class="lede">Add what's on your shelves and I'll suggest three dishes that use mostly those.</p>
+          <svg class="head-art" viewBox="0 0 240 170" aria-hidden="true"><use href="#i-leaf" x="20" y="80" width="120" height="70" transform="rotate(-18 80.0 115.0)"/><use href="#i-strawberry" x="110" y="10" width="100" height="120" transform="rotate(14 160.0 70.0)"/><use href="#i-daisy" x="60" y="30" width="44" height="44"/><use href="#i-petal" x="200" y="90" width="24" height="48" transform="rotate(30 212.0 114.0)"/></svg>
         </div>
         <div class="panel" style="max-width:1200px">
           <form class="row" id="fridgeForm">
@@ -286,6 +439,7 @@
           <p class="eyebrow">one tap, whole day</p>
           <h2 class="display">Day Plan</h2>
           <p class="lede">Breakfast, lunch, a snack and dinner for today, built from your fridge where possible.</p>
+          <svg class="head-art" viewBox="0 0 240 170" aria-hidden="true"><use href="#i-vine" x="0" y="90" width="140" height="70"/><use href="#i-chili" x="120" y="0" width="60" height="146" transform="rotate(28 150.0 73.0)"/><use href="#i-chili" x="170" y="20" width="50" height="121" transform="rotate(-14 195.0 80.5)"/><use href="#i-petal" x="80" y="30" width="24" height="48" transform="rotate(-26 92.0 54.0)"/><use href="#i-daisy" x="40" y="40" width="40" height="40"/></svg>
         </div>
         <div class="row">
           <button class="btn" id="planBtn">Plan my day</button>
@@ -303,6 +457,7 @@
           <p class="eyebrow">no counting, just noticing</p>
           <h2 class="display">Food Log</h2>
           <p class="lede">Write what you ate in your own words. I'll notice what nourished you.</p>
+          <svg class="head-art" viewBox="0 0 240 170" aria-hidden="true"><use href="#i-vine" x="10" y="90" width="140" height="70"/><use href="#i-daisy" x="120" y="20" width="58" height="58"/><use href="#i-daisy" x="180" y="70" width="40" height="40"/><use href="#i-daisy" x="90" y="90" width="34" height="34"/><use href="#i-petal" x="60" y="20" width="24" height="48" transform="rotate(-30 72.0 44.0)"/><use href="#i-leaf" x="150" y="110" width="80" height="47" transform="rotate(-10 190.0 133.5)"/></svg>
         </div>
         <div class="log-wrap">
           <div class="panel">
@@ -329,6 +484,7 @@
           <p class="eyebrow">all about you</p>
           <h2 class="display">My Profile <span id="savedMsg" class="saved" style="font-size:1rem;text-transform:none">saved</span></h2>
           <p class="lede">Every suggestion in the app is shaped around this.</p>
+          <svg class="head-art" viewBox="0 0 240 170" aria-hidden="true"><use href="#i-leaf" x="30" y="60" width="130" height="76" transform="rotate(-30 95.0 98.0)"/><use href="#i-strawberry" x="140" y="30" width="80" height="96" transform="rotate(-10 180.0 78.0)"/><use href="#i-petal" x="100" y="10" width="26" height="52" transform="rotate(20 113.0 36.0)"/><use href="#i-daisy" x="20" y="20" width="44" height="44"/></svg>
         </div>
         <div class="profile-grid" id="profileForm">
           <div class="panel">
@@ -609,6 +765,7 @@ List 3-6 ingredient swaps (original -> swap -> short why tied to her conditions)
       <div class="caps">Your version of ${clean(d.dish || dish)}</div>
       <h2 class="display">${clean(d.new_name || 'A nourishing swap')}</h2>
       ${d.tip ? `<p class="tip">${clean(d.tip)}</p>` : ''}
+      <svg class="vine" viewBox="0 0 140 70" aria-hidden="true"><use href="#i-vine"/></svg>
     </div>
     <div class="sr-body">
       <div>
